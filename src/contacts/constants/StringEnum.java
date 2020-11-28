@@ -11,6 +11,7 @@ public enum StringEnum {
     ENTER_THE_NUMBER("Enter the number:"),
 
 
+    MENU("Enter action (add, remove, edit, count, list, exit):"),
 
     /*
         Message for after-input
