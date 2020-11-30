@@ -4,12 +4,17 @@ package contacts;
 import contacts.constants.StringEnum;
 import contacts.db.DataBaseImitator;
 import contacts.entity.Contact;
+import contacts.entity.ContactBook;
+import contacts.utils.ConsoleUtils;
 
 import static contacts.utils.ConsoleUtils.printMessageln;
 import static contacts.utils.ConsoleUtils.readLine;
 
+//TODO adding menu bar
+
 public class ContactManager {
-    private boolean isRunning = true;
+
+    private static final ContactBook CONTACT_BOOK = new ContactBook();
 
 
     public void runApplication() {
@@ -18,54 +23,64 @@ public class ContactManager {
 
 
     private void createUserScenario() {
-        //TODO create cycle in app
-        String command;
+        boolean doNotExit = true;
         do {
             printMessageln(StringEnum.MENU_BAR.getValue());
-            command = readLine();
-            switch (command) {
-                case "add": {
-                    printMessageln(StringEnum.ENTER_NAME_PERSON.getValue());
-                    String name = readLine();
 
-
-                    printMessageln(StringEnum.ENTER_SURNAME_PERSON.getValue());
-                    String surName = readLine();
-
-
-                    printMessageln(StringEnum.ENTER_THE_NUMBER.getValue());
-                    String phoneNumber = readLine();
-
-
-                    if (DataBaseImitator.createContact(new Contact(name, surName, phoneNumber))) {
-                        printMessageln(StringEnum.RECORD_CREATED.getValue());
-
-                        isRunning = true;
-
-                    }
+            switch (ConsoleUtils.readLine().toUpperCase()) {
+                case "ADD": {
+                    openAddMenu();
 
 
                 }
-                case "remove": {
+                case "REMOVE": {
                 }
 
-                case "edit": {
+                case "EDIT": {
                 }
 
-                case "count": {
+                case "COUNT": {
                     if (DataBaseImitator.countDbContact() == 1) {
                         printMessageln(StringEnum.PB_WITH_SINGLE_REC_CREATED.getValue(), "single");
                     } else {
                         printMessageln(StringEnum.PHONE_BOOK_IS_EMPTY.getValue());
                     }
-
                 }
 
                 case "list": {
                 }
-
-
             }
-        } while (!command.equals("exit"));
+        } while (doNotExit);
     }
+
+    private void openAddMenu() {
+        //boolean doNotStop = false;
+
+        printMessageln(StringEnum.ENTER_NAME_PERSON.getValue());
+        String name = readLine();
+
+
+        printMessageln(StringEnum.ENTER_SURNAME_PERSON.getValue());
+        String surName = readLine();
+
+
+        printMessageln(StringEnum.ENTER_THE_NUMBER.getValue());
+        String phoneNumber = readLine();
+
+
+        if (DataBaseImitator.createContact(new Contact(name, surName, phoneNumber))) {
+            printMessageln(StringEnum.RECORD_CREATED.getValue());
+        }
+        // do {
+        // }while (doNotStop);
+
+    }
+
+
+    private void commandAddPerson() {
+
+
+    }
+
+
 }
