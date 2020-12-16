@@ -4,13 +4,17 @@ package contacts;
 import contacts.constants.StringEnum;
 import contacts.db.DataBaseImitator;
 import contacts.entity.Contact;
+import contacts.utils.ConsoleUtils;
 
-import static contacts.utils.ConsoleUtils.printMessageln;
-import static contacts.utils.ConsoleUtils.readLine;
 
-//TODO adding menu bar
+import java.util.ArrayList;
+import java.util.List;
+
+import static contacts.utils.ConsoleUtils.*;
 
 class ContactManager {
+
+    Contact contact = new Contact();
     boolean doNotExit = true;
 
     public void runApplication() {
@@ -18,7 +22,7 @@ class ContactManager {
     }
 
 
-    private void createUserScenario() {
+    private static void createUserScenario() {
         DataBaseImitator dataBaseImitator;
         String command;
         boolean doNotExit = true;
@@ -28,32 +32,21 @@ class ContactManager {
             switch (command) {
                 case "add": {
 
-                    Contact contact = new Contact();
-                    printMessageln(StringEnum.ENTER_NAME_PERSON.getValue());
-                    String name;
-                    contact.setName(name = readLine());
+                    Contact contact = new Contact
+                            .Builder().setName(ConsoleUtils.simplePrint(StringEnum.ENTER_NAME_PERSON.getValue()), ConsoleUtils.readLine())
+                            .setSurName(ConsoleUtils.simplePrint(StringEnum.ENTER_SURNAME_PERSON.getValue()), ConsoleUtils.readLine())
+                            .setPhoneNumber(ConsoleUtils.simplePrint(StringEnum.ENTER_THE_NUMBER.getValue()), ConsoleUtils.readLine())
+                            .build();
 
+                    DataBaseImitator.createContact(contact);
 
-                    printMessageln(StringEnum.ENTER_SURNAME_PERSON.getValue());
-                    String surName;
-                    contact.setSurName(surName = readLine());
-
-                    printMessageln(StringEnum.ENTER_THE_NUMBER.getValue());
-                    String phoneNumber;
-                    contact.setPhoneNumber(phoneNumber = readLine());
-
-                    if (DataBaseImitator.createContact(new Contact(name, surName, phoneNumber))) {
-                        printMessageln(StringEnum.RECORD_CREATED.getValue());
-
-                    }
-
-                    if (DataBaseImitator.countDbContact() == 1) {
+                    if (DataBaseImitator.countDbContact() != 0) {
                         printMessageln(StringEnum.PB_WITH_SINGLE_REC_CREATED.getValue(), "single");
                     }
                 }
 
                 case "edit": {
-                    if (DataBaseImitator.countDbContact() < 1) {
+                    if (DataBaseImitator.countDbContact() == 0) {
                         printMessageln(StringEnum.NO_RECORDS_TO_EDIT.getValue());
                         break;
                     }
@@ -61,26 +54,29 @@ class ContactManager {
                 }
 
                 case "remove": {
-                    if (DataBaseImitator.countDbContact() < 1) {
+                    if (DataBaseImitator.countDbContact() == 0) {
                         printMessageln(StringEnum.NO_RECORDS_TO_REMOVE.getValue());
                         break;
                     }
 
                 }
 
+                //TODO write and realize this method
                 case "count": {
-                    if (DataBaseImitator.countDbContact() < 1) {
+                    if (DataBaseImitator.countDbContact() == 0) {
                         printMessageln(StringEnum.PHONE_BOOK_IS_EMPTY.getValue());
-                        break;
+                    } else {
+                        for (int i = 1; i < DataBaseImitator.countDbContact(); i++) {
+                            System.out.println(i);
+
+                        }
                     }
                 }
 
 
                 case "list": {
-                    DataBaseImitator.getContactList();
-                    for (Contact o : DataBaseImitator.getContactList()) {
-                        System.out.println(o);
-                    }
+
+
                 }
             }
 
