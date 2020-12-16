@@ -4,9 +4,14 @@ import contacts.entity.Contact;
 
 import java.util.*;
 
+import contacts.entity.Contact;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseImitator {
     private static final List<Contact> CONTACT_LIST = new ArrayList<>();
+
 
     public static List<Contact> getContactList() {
         return CONTACT_LIST;
