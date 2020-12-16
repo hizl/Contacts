@@ -18,6 +18,8 @@ public enum StringEnum {
      */
     RECORD_CREATED("A record created!"),
     PB_WITH_SINGLE_REC_CREATED("A Phone book with a %s record created!"),
+    PB_WITH_OTHER_REC_CREATED("The Phone Book has %d records."),
+
 
     PHONE_BOOK_IS_EMPTY("The Phone Book has 0 records."),
     NO_RECORDS_TO_EDIT("No records to edit!"),

@@ -13,6 +13,11 @@ public class ConsoleUtils {
         System.out.printf(message, args);
     }
 
+    public static ConsoleUtils simplePrint(String m) {
+        System.out.printf("%s%n", m);
+        return null;
+    }
+
     public static String readLine() {
         return SCANNER.nextLine();
     }
