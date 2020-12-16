@@ -4,18 +4,14 @@ package contacts;
 import contacts.constants.StringEnum;
 import contacts.db.DataBaseImitator;
 import contacts.entity.Contact;
-import contacts.entity.ContactBook;
-import contacts.utils.ConsoleUtils;
 
 import static contacts.utils.ConsoleUtils.printMessageln;
 import static contacts.utils.ConsoleUtils.readLine;
 
 //TODO adding menu bar
 
-public class ContactManager {
-
-    private static final ContactBook CONTACT_BOOK = new ContactBook();
-
+class ContactManager {
+    boolean doNotExit = true;
 
     public void runApplication() {
         createUserScenario();
@@ -23,64 +19,71 @@ public class ContactManager {
 
 
     private void createUserScenario() {
+        DataBaseImitator dataBaseImitator;
+        String command;
         boolean doNotExit = true;
         do {
             printMessageln(StringEnum.MENU_BAR.getValue());
+            command = readLine();
+            switch (command) {
+                case "add": {
 
-            switch (ConsoleUtils.readLine().toUpperCase()) {
-                case "ADD": {
-                    openAddMenu();
+                    Contact contact = new Contact();
+                    printMessageln(StringEnum.ENTER_NAME_PERSON.getValue());
+                    String name;
+                    contact.setName(name = readLine());
 
 
-                }
-                case "REMOVE": {
-                }
+                    printMessageln(StringEnum.ENTER_SURNAME_PERSON.getValue());
+                    String surName;
+                    contact.setSurName(surName = readLine());
 
-                case "EDIT": {
-                }
+                    printMessageln(StringEnum.ENTER_THE_NUMBER.getValue());
+                    String phoneNumber;
+                    contact.setPhoneNumber(phoneNumber = readLine());
 
-                case "COUNT": {
+                    if (DataBaseImitator.createContact(new Contact(name, surName, phoneNumber))) {
+                        printMessageln(StringEnum.RECORD_CREATED.getValue());
+
+                    }
+
                     if (DataBaseImitator.countDbContact() == 1) {
                         printMessageln(StringEnum.PB_WITH_SINGLE_REC_CREATED.getValue(), "single");
-                    } else {
-                        printMessageln(StringEnum.PHONE_BOOK_IS_EMPTY.getValue());
                     }
                 }
 
+                case "edit": {
+                    if (DataBaseImitator.countDbContact() < 1) {
+                        printMessageln(StringEnum.NO_RECORDS_TO_EDIT.getValue());
+                        break;
+                    }
+
+                }
+
+                case "remove": {
+                    if (DataBaseImitator.countDbContact() < 1) {
+                        printMessageln(StringEnum.NO_RECORDS_TO_REMOVE.getValue());
+                        break;
+                    }
+
+                }
+
+                case "count": {
+                    if (DataBaseImitator.countDbContact() < 1) {
+                        printMessageln(StringEnum.PHONE_BOOK_IS_EMPTY.getValue());
+                        break;
+                    }
+                }
+
+
                 case "list": {
+                    DataBaseImitator.getContactList();
+                    for (Contact o : DataBaseImitator.getContactList()) {
+                        System.out.println(o);
+                    }
                 }
             }
-        } while (doNotExit);
+
+        } while (!command.equals("exit"));
     }
-
-    private void openAddMenu() {
-        //boolean doNotStop = false;
-
-        printMessageln(StringEnum.ENTER_NAME_PERSON.getValue());
-        String name = readLine();
-
-
-        printMessageln(StringEnum.ENTER_SURNAME_PERSON.getValue());
-        String surName = readLine();
-
-
-        printMessageln(StringEnum.ENTER_THE_NUMBER.getValue());
-        String phoneNumber = readLine();
-
-
-        if (DataBaseImitator.createContact(new Contact(name, surName, phoneNumber))) {
-            printMessageln(StringEnum.RECORD_CREATED.getValue());
-        }
-        // do {
-        // }while (doNotStop);
-
-    }
-
-
-    private void commandAddPerson() {
-
-
-    }
-
-
 }
