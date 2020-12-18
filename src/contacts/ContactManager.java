@@ -15,9 +15,15 @@ class ContactManager {
     Contact contact = new Contact();
     boolean doNotExit = true;
 
+
+
+
     public void runApplication() {
         createUserScenario();
     }
+
+
+
 
 
     private static void createUserScenario() {
@@ -27,6 +33,12 @@ class ContactManager {
         DataBaseImitator dataBaseImitator;
         String command;
         boolean doNotExit = true;
+
+
+
+
+
+
         do {
             printMessageln(StringEnum.MENU_BAR.getValue());
             command = readLine();
@@ -53,23 +65,27 @@ class ContactManager {
                         printMessageln(StringEnum.NO_RECORDS_TO_EDIT.getValue());
                         break;
                     } else {
+
+                        for (Map.Entry<Integer, Contact> o : mapContact.entrySet()) {
+                            System.out.printf("%d. %s\n", o.getKey(), o.getValue());
+                        }
+
                         printMessageln(StringEnum.SELECT_RECORD.getValue());
 
-
-                        for (Contact o : DataBaseImitator.getContactList()) {
-                            System.out.println(o);
-                        }
 
 
                         printMessageln(StringEnum.SELECT_A_FIELD.getValue());
                         command = readLine();
                         Contact contact = new Contact();
+
+
                         switch (command) {
                             case "name": {
                                 new Contact
                                         .Builder()
                                         .setName(ConsoleUtils.simplePrint(StringEnum.ENTER_NAME_PERSON.getValue()),
                                                 ConsoleUtils.readLine());
+
                                 ConsoleUtils.printMessageln(StringEnum.UPDATE_RECORD.getValue());
                                 break;
                             }
@@ -126,12 +142,22 @@ class ContactManager {
 
 
                 case "list": {
+                        for (Map.Entry<Integer, Contact> o : mapContact.entrySet()) {
+                            System.out.printf("%d. %s\n", o.getKey(), o.getValue());
+                        }
+                        break;
 
-                    break;
-
+                    }
                 }
-            }
 
         } while (!command.equals("exit"));
     }
-}
+
+
+
+
+    }
+
+
+
+
