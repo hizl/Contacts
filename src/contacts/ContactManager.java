@@ -12,18 +12,9 @@ import static contacts.utils.ConsoleUtils.*;
 
 class ContactManager {
 
-    Contact contact = new Contact();
-    boolean doNotExit = true;
-
-
-
-
     public void runApplication() {
         createUserScenario();
     }
-
-
-
 
 
     private static void createUserScenario() {
@@ -33,10 +24,6 @@ class ContactManager {
         DataBaseImitator dataBaseImitator;
         String command;
         boolean doNotExit = true;
-
-
-
-
 
 
         do {
@@ -52,16 +39,20 @@ class ContactManager {
                             .build();
                     mapContact.put(countId++, contact);
 
-                    DataBaseImitator.createContact(contact);
+                    //DataBaseImitator.createContact(contact);
 
-                    if (DataBaseImitator.countDbContact() != 0) {
+                    if (!mapContact.isEmpty()) {
                         printMessageln(StringEnum.PB_WITH_SINGLE_REC_CREATED.getValue(), "single");
                     }
+
+//                    if (DataBaseImitator.countDbContact() != 0) {
+//                        printMessageln(StringEnum.PB_WITH_SINGLE_REC_CREATED.getValue(), "single");
+//                    }
                     break;
                 }
 
                 case "edit": {
-                    if (DataBaseImitator.countDbContact() == 0) {
+                    if (mapContact.isEmpty()) {
                         printMessageln(StringEnum.NO_RECORDS_TO_EDIT.getValue());
                         break;
                     } else {
@@ -72,34 +63,41 @@ class ContactManager {
 
                         printMessageln(StringEnum.SELECT_RECORD.getValue());
 
+                        int choseContact = readInt();
+
+                        if (mapContact.containsKey(choseContact)) {
+
+                            printMessageln(StringEnum.SELECT_A_FIELD.getValue());
+                            command = readLine();
 
 
-                        printMessageln(StringEnum.SELECT_A_FIELD.getValue());
-                        command = readLine();
-                        Contact contact = new Contact();
+                            switch (command) {
+                                case "name": {
+                                    Contact contact = new Contact
+                                            .Builder()
+                                            .setName(ConsoleUtils
+                                                            .simplePrint(StringEnum.ENTER_NAME_PERSON.getValue()),
+                                                    ConsoleUtils.readLine()).build();
+
+                                    mapContact.put(choseContact, contact);
+
+                                    ConsoleUtils.printMessageln(StringEnum.UPDATE_RECORD.getValue());
+                                    break;
+                                }
 
 
-                        switch (command) {
-                            case "name": {
-                                new Contact
-                                        .Builder()
-                                        .setName(ConsoleUtils.simplePrint(StringEnum.ENTER_NAME_PERSON.getValue()),
-                                                ConsoleUtils.readLine());
+                                case "surname": {
 
-                                ConsoleUtils.printMessageln(StringEnum.UPDATE_RECORD.getValue());
-                                break;
+                                    break;
+                                }
+
+                                case "number": {
+
+                                    break;
+                                }
+
                             }
-
-                            case "surname": {
-
-                                break;
-                            }
-
-                            case "number": {
-
-                                break;
-                            }
-
+                            break;
                         }
 
                         // int gettingId = readInt();
@@ -124,7 +122,7 @@ class ContactManager {
                         printMessage(StringEnum.SELECT_RECORD.getValue());
                         int removeChoiceContact = readInt();
                         mapContact.remove(removeChoiceContact);
-                        printMessageln(StringEnum.REMOVED_RECORD.getValue());
+
                         break;
                     }
                 }
@@ -139,24 +137,16 @@ class ContactManager {
                         break;
                     }
                 }
-
-
                 case "list": {
-                        for (Map.Entry<Integer, Contact> o : mapContact.entrySet()) {
-                            System.out.printf("%d. %s\n", o.getKey(), o.getValue());
-                        }
-                        break;
-
+                    for (Map.Entry<Integer, Contact> o : mapContact.entrySet()) {
+                        System.out.printf("%d. %s\n", o.getKey(), o.getValue());
                     }
+                    break;
                 }
-
+            }
         } while (!command.equals("exit"));
     }
-
-
-
-
-    }
+}
 
 
 
